@@ -35,7 +35,7 @@ jobs:
 
                 return Buffer.from(data.content, 'base64').toString();
               } catch (error) {
-                consoel.log(error)
+                console.log(error)
                 if (error.status === 404) {
                   // README not found, return null to check parent directory
                   return null;
