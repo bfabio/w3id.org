@@ -30,7 +30,6 @@ jobs:
                   owner,
                   repo,
                   path: `${directory}/${readmeFilename}`,
-                  ref: context.payload.pull_request.head.ref
                 });
 
                 return Buffer.from(data.content, 'base64').toString();
