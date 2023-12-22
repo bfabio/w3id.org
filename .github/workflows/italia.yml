@@ -5,11 +5,12 @@ on:
     paths:
       - 'italia/**'
 
+permissions:
+  issues: write
+
 jobs:
   check-pr:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
 
     steps:
       - name: Check for directory maintainership in README files
@@ -109,3 +110,5 @@ jobs:
             }
 
             run();
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
