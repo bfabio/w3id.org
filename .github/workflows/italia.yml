@@ -76,7 +76,7 @@ jobs:
                 }
               }
 
-              console.log(`author not found: ${directory}`)
+              console.log(`author not found: ${directory}, usernames: ${usernames}`)
               return { author_found: false, directory, usernames };
             }
 
