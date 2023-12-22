@@ -53,8 +53,8 @@ jobs:
                 const content = await getReadmeContent(directory, filename);
 
                 if (content !== null) {
-                  const isAuthorListed = authorUrlPattern.test(content)
-                  const usernames = extractUsernames(content)
+                  const isAuthorListed = authorUrlPattern.test(content);
+                  const usernames = extractUsernames(content);
 
                   if (isAuthorListed) {
                     return { author_found: true, directory };
@@ -100,6 +100,7 @@ jobs:
                   issue_number: pull_number,
                   body,
                 });
+              }
             }
 
             run();
