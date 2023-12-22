@@ -104,10 +104,10 @@ jobs:
 
                 body += `\n* \`${directory}/\`\n`
                 body += isAuthorFound
-                  ? `✅ Author @${author} is listed as maintainer of \`${directory}\` (via [\`/${dir}/README.md\`](../blob/master/${dir}/README.md))`
+                  ? `✅ Author @${author} is listed as maintainer of \`${directory}\` (via [\`${dir}/README.md\`](../blob/master/${dir}/README.md))`
                   : [
                     `⚠️ Author @${author} is not listed in any README.md within the \`italia/\` directory`,
-                    usernames ? `${usernames.join(' ')} Please review this PR affecting the \`${dir}/\` directory.` : "",
+                    usernames ? `${usernames.join(' ')} please review this PR` : "",
                   ].join('\n');
               }
 
