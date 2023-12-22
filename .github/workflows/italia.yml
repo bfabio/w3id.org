@@ -89,7 +89,7 @@ jobs:
                 const { author_found: isAuthorFound, directory: dir, usernames } = await checkReadme(directory);
 
                 const body = isAuthorFound
-                  ? `✅ Author ${author} is listed as maintainer of \`${directory}\` (via README.md in \`${dir}\`)`
+                  ? `✅ Author ${author} is listed as maintainer of \`${directory}\` (via [\`/${dir}/README.md\`](../blob/master/${dir}/README.md))`
                   : [
                     `🔴 Author ${author} is not listed in any README.md within the \`italia/\` directory`,
                     `\n`,
