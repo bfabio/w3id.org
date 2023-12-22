@@ -1,7 +1,8 @@
 name: Review PR permissions for italia/ directory
 
 on:
-  pull_request:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
     paths:
       - 'italia/**'
 
@@ -110,5 +111,3 @@ jobs:
             }
 
             run();
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
