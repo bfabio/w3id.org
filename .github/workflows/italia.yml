@@ -63,7 +63,7 @@ jobs:
                     const isAuthorListed = authorUrlPattern.test(content);
                     usernames = extractUsernames(content);
 
-          console.log(`isAuthorListed: ${isAuthorListed} currentDir: ${currentDir} usernames: ${usernames}`)
+                    console.log(`isAuthorListed: ${isAuthorListed} currentDir: ${currentDir} usernames: ${usernames}`)
                     if (isAuthorListed) {
                       return { author_found: true, directory: currentDir, usernames };
                     }
@@ -71,7 +71,7 @@ jobs:
                 }
               }
 
-          console.log(`author not found: ${directory}`)
+              console.log(`author not found: ${directory}`)
               return { author_found: false, directory, usernames };
             }
 
