@@ -5,6 +5,9 @@ on:
     paths:
       - 'italia/**'
 
+permissions:
+  issues: write
+
 jobs:
   check-pr:
     runs-on: ubuntu-latest
