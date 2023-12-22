@@ -94,7 +94,7 @@ jobs:
                 directories.add(file.filename.substring(0, file.filename.lastIndexOf('/')));
               }
 
-              for (const directory in Array.from(directories)) {
+              for (const directory of Array.from(directories)) {
                 console.log(`checking directory: ${directory}`)
                 const { author_found: isAuthorFound, directory: dir, usernames } = await checkReadme(directory);
 
