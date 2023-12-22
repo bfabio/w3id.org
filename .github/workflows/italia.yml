@@ -91,7 +91,7 @@ jobs:
                   : [
                     `🔴 Author ${author} is not listed in any README.md within the \`italia/\` directory`,
                     `\n`,
-                    usernames ? `@${usernames.join(' @')} Please review this PR affecting the \`${dir}\` directory.` : "",
+                    usernames ? `${usernames.join(' ')} Please review this PR affecting the \`${dir}\` directory.` : "",
                   ].join('\n');
 
                 await github.rest.issues.createComment({
