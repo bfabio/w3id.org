@@ -1,0 +1,105 @@
+name: Review PR permissions for italia/ directory
+
+on:
+  pull_request:
+    paths:
+      - 'italia/**'
+
+jobs:
+  check-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for directory maintainership in README files
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const ROOT_DIR = "italia";
+            const pull_number = context.issue.number;
+            const { owner, repo } = context.repo;
+            const author = context.payload.pull_request.user.login.toLowerCase();
+            const authorUrlPattern = new RegExp(`https://github\\.com/${author}(?![\\w-])`, 'i');
+
+            async function getReadmeContent(directory, readmeFilename) {
+              try {
+                const { data } = await octokit.rest.repos.getContent({
+                  owner,
+                  repo,
+                  path: `${directory}/${readmeFilename}`,
+                  ref: context.payload.pull_request.head.ref
+                });
+
+                return Buffer.from(data.content, 'base64').toString();
+              } catch (error) {
+                if (error.status === 404) {
+                  // README not found, return null to check parent directory
+                  return null;
+                }
+
+                throw error;
+              }
+            }
+
+            function extractUsernames(readmeContent) {
+              const urlPattern = /https:\/\/github\.com\/([a-zA-Z0-9-]+)/g;
+              const matches = readmeContent.matchAll(urlPattern);
+
+              return Array.from(matches, m => m[1]);
+            }
+
+            async function checkReadme(directory) {
+              const readmeFilenames = ['README.md', 'readme.md'];
+
+              for (const filename of readmeFilenames) {
+                const content = await getReadmeContent(directory, filename);
+
+                if (content !== null) {
+                  const isAuthorListed = authorUrlPattern.test(content))
+                  const usernames = extractUsername(content)
+
+                  if (isAuthorListed) {
+                    return { author_found: true, directory };
+                  } else if (usernames.length > 0) {
+                    // We have a readme in this directory, the README contains usernames,
+                    // but the author is NOT among those
+                    return { author_found: false, usernames, directory };
+                  }
+                }
+              }
+
+              if (directory !== ROOT_DIR) {
+                const parentDirectory = directory.substring(0, directory.lastIndexOf('/'));
+                return parentDirectory ? checkReadme(parentDirectory) : { author_found: false };
+              }
+
+              return { author_found: false };
+            }
+
+            async function run() {
+              const { data: files } = await octokit.rest.pulls.listFiles({
+                owner,
+                repo,
+                pull_number
+              });
+
+              let readmeResult = null;
+              for (const file of files) {
+                const directory = file.filename.substring(0, file.filename.lastIndexOf('/'));
+                const { author_found: isAuthorFound, directory: dir, usernames }= await checkReadme(directory);
+
+                const body = isAuthorFound
+                  ? `✅ Author ${author} is listed as maintainer of \`${dir}\``
+                  : [
+                    `🔴 Author ${author} is not listed in any README.md within the \`italia/\` directory`,
+                    `\n`,
+                    usernames ? `@${usernames.join(' @')} Please review this PR affecting the \`${dir}\` directory.` : "",
+                  ].join('\n');
+
+                await octokit.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: pull_number,
+                  body,
+                });
+            }
+
+            run();
