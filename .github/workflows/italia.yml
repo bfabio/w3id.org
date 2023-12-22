@@ -7,7 +7,7 @@ on:
       - 'italia/**'
 
 permissions:
-  pull-reques: write
+  pull-requests: write
 
 jobs:
   check-pr:
