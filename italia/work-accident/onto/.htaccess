@@ -14,6 +14,9 @@ RewriteCond %{ENV:SYNTAX} ^(rdf|ttl|owl|n3)$
 RewriteRule ^([a-zA-Z-_0-9]+)(/?)$ %{ENV:ROOT_URL}$1/latest/$1.%{ENV:SYNTAX} [R=303,L]
 
 
+
+
+
 RewriteCond %{ENV:SYNTAX} ^html$
 RewriteRule ^(.+)(/.+)$ https://schema.gov.it/lodview/work-accident/onto/$1$2 [R=303,L]
 RewriteCond %{ENV:SYNTAX} ^html$
