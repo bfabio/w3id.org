@@ -7,8 +7,7 @@ on:
       - 'italia/**'
 
 permissions:
-  issues: write
-  actions: write
+  pull-reques: write
 
 jobs:
   check-pr:
