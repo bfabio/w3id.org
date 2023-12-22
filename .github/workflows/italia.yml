@@ -21,7 +21,7 @@ jobs:
 
             async function getReadmeContent(directory, readmeFilename) {
               try {
-                const { data } = await octokit.rest.repos.getContent({
+                const { data } = await github.rest.repos.getContent({
                   owner,
                   repo,
                   path: `${directory}/${readmeFilename}`,
@@ -53,8 +53,8 @@ jobs:
                 const content = await getReadmeContent(directory, filename);
 
                 if (content !== null) {
-                  const isAuthorListed = authorUrlPattern.test(content))
-                  const usernames = extractUsername(content)
+                  const isAuthorListed = authorUrlPattern.test(content)
+                  const usernames = extractUsernames(content)
 
                   if (isAuthorListed) {
                     return { author_found: true, directory };
@@ -75,7 +75,7 @@ jobs:
             }
 
             async function run() {
-              const { data: files } = await octokit.rest.pulls.listFiles({
+              const { data: files } = await github.rest.pulls.listFiles({
                 owner,
                 repo,
                 pull_number
@@ -94,7 +94,7 @@ jobs:
                     usernames ? `@${usernames.join(' @')} Please review this PR affecting the \`${dir}\` directory.` : "",
                   ].join('\n');
 
-                await octokit.rest.issues.createComment({
+                await github.rest.issues.createComment({
                   owner,
                   repo,
                   issue_number: pull_number,
